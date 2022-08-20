@@ -1,13 +1,16 @@
 <template>
   <div class="flex items-center py-4 px-8">
     <div class="flex-1">
-      <a class="font-bold text-xl">Universal Photo Gallery</a>
+      <nuxt-link to="/" class="font-bold text-xl">Universal Photo Gallery</nuxt-link>
     </div>
     <div class="flex-none">
-      <div class="dropdown dropdown-end">
+      <div v-if="$auth.loggedIn" class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
-            <img :src="$auth.user.profile_picture_url" referrerpolicy="no-referrer"/>
+            <img
+              :src="$auth.user.profile_picture_url"
+              referrerpolicy="no-referrer"
+            />
           </div>
         </label>
         <ul
@@ -19,15 +22,25 @@
           </li>
         </ul>
       </div>
+
+      <ul v-else class="menu menu-horizontal p-0">
+        <li><a @click="redirect">Get started</a></li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
+import { getGoogleOAuthUrl } from "@/helpers";
+
 export default {
+  auth: "guest",
   methods: {
     logout() {
       this.$auth.logout();
+    },
+    redirect() {
+      window.location.replace(getGoogleOAuthUrl());
     }
   }
 };

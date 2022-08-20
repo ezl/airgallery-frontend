@@ -1,46 +1,58 @@
 <template>
   <div class="">
-    <div class="w-12/12 mx-auto px-8 mt-16">
+    <div v-if="!loading && gallery" class="w-12/12 mx-auto px-8 mt-16">
       <div class="flex items-center justify-end">
+        <div v-if="gallery.published_at">
+          <a :href="galleryLink" target="_blank" class="text-blue-500 underline">{{galleryLink}}</a>
+        </div>
         <label
           :class="{ loading: uploading }"
           :disabled="uploading"
-          class="btn btn-primary btn-outline"
+          class="btn btn-primary btn-outline ml-3"
         >
           <input type="file" @change="onChange" class="hidden" />
           Upload
         </label>
-        <button class="btn btn-primary ml-3">Publish</button>
+        <button @click="togglePublication" :class="{ loading: updating }" class="btn btn-primary ml-3">
+          <span v-if="!gallery.published_at">Publish</span>
+          <span v-else>Unpublish</span>
+        </button>
       </div>
       <div class="mt-8">
-        <div v-if="images.length" class="gallery">
-          <div v-for="img in images" :key="img.id">
-            <img :src="img.thumbnailLink" referrerPolicy="no-referrer" />
-          </div>
-        </div>
-        <div v-else class="text-center mt-20">
-          <span
-            v-if="loading"
-            class="loading btn bg-transparent text-black border-none"
-            >Loading...</span
-          >
-          <span v-else>No images</span>
-        </div>
+        <Gallery
+          ref="gallery"
+          v-if="gallery"
+          :gallery="gallery"
+          image-fetch-endpoint="auth/user/gallery/images"
+        />
       </div>
+    </div>
+    <div v-else class="h-screen flex justify-center items-center">
+      <h5 class="text-lg">Loading...</h5>
     </div>
   </div>
 </template>
 
 <script>
+import Gallery from "@/components/Gallery";
 export default {
+  components: {
+    Gallery
+  },
   middleware: "auth",
   data() {
     return {
       file: null,
-      images: [],
+      gallery: null,
       uploading: false,
-      loading: false
+      loading: false,
+      updating: false
     };
+  },
+  computed:{
+    galleryLink(){
+      return window.location.origin + '/gallery/' + this.gallery.slug
+    }
   },
   methods: {
     onChange(e) {
@@ -60,39 +72,37 @@ export default {
           }
         });
 
-        this.images.unshift(res.data);
+        this.$refs.gallery.add(res.data);
       } catch (error) {
         console.error(error);
       }
       this.uploading = false;
     },
-    async getImages() {
+    async getDefaultUserGallery() {
       this.loading = true;
       try {
-        const res = await this.$axios.get(`/gallery/1/images`);
-        this.images = res.data;
+        const res = await this.$axios.get(`/auth/user/gallery`);
+        this.gallery = res.data;
       } catch (error) {
         console.error(error);
       }
       this.loading = false;
+    },
+    async togglePublication() {
+      this.updating = true;
+      try {
+        const res = await this.$axios.patch(
+          `galleries/${this.gallery.id}/toggle-publication`
+        );
+        this.gallery = res.data;
+      } catch (error) {
+        console.error(error);
+      }
+      this.updating = false;
     }
   },
   mounted() {
-    this.getImages();
+    this.getDefaultUserGallery();
   }
 };
 </script>
-
-<style scoped>
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 5px;
-}
-
-.gallery img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-</style>
