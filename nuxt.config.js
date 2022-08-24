@@ -43,7 +43,7 @@ export default {
   build: {},
 
   axios: {
-    baseURL: "http://localhost:8000/api"
+    baseURL: "https://kettlestitch.com/backend/api"
   },
 
   auth: {
