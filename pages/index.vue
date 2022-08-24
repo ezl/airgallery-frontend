@@ -19,7 +19,11 @@ export default {
   auth: 'guest',
   methods: {
     redirect() {
-      window.location.replace(getGoogleOAuthUrl());
+      window.location.replace(getGoogleOAuthUrl([
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+      ]));
     }
   }
 };

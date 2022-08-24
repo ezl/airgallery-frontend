@@ -1,9 +1,14 @@
-export const getGoogleOAuthUrl = () => {
+export const getGoogleOAuthUrl = (requestedScopes) => {
+
+  if(!Array.isArray(requestedScopes)){
+    throw('Scope must be an array')
+  }
+
+  const scope = requestedScopes.join(' ')
+
   const baseUrl = "https://accounts.google.com/o/oauth2/auth";
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const redirectUrl = process.env.GOOGLE_REDIRECT_URL;
-  const scope =
-    "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
   const responseType = "code";
   const accessType = "offline";
 
