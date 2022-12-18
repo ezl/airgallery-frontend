@@ -1,7 +1,8 @@
 export default {
   env: {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_REDIRECT_URL: process.env.GOOGLE_REDIRECT_URL
+    GOOGLE_REDIRECT_URL: process.env.GOOGLE_REDIRECT_URL,
+    API_BASE_URL: process.env.API_BASE_URL
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -43,7 +44,7 @@ export default {
   build: {},
 
   axios: {
-    baseURL: "https://kettlestitch.com/backend/api"
+    baseURL: process.env.API_BASE_URL
   },
 
   auth: {
