@@ -7,7 +7,12 @@ module.exports = {
   variants: {
     extend: {}
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require('@tailwindcss/forms', {
+      strategy: 'base'
+    }),
+    require("daisyui")
+    ],
   daisyui: {
     styled: true,
     themes: false,

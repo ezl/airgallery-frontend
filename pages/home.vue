@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <nuxt-link to="/add-gallery">Add new gallery</nuxt-link>
     <div v-if="!loading && gallery" class="w-12/12 mx-auto px-8 mt-16">
       <div class="flex items-center justify-end">
         <div v-if="gallery.published_at">
