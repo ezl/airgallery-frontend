@@ -26,8 +26,8 @@ export default {
   middleware: "auth",
   data() {
     return {
-      galleryName: null,
-      galleryDescription: null,
+      galleryName: 'test name',
+      galleryDescription: null ||'test description test description test description test description test description test description ',
       submitting: false
      }
    },
@@ -42,9 +42,10 @@ export default {
     async createNewGallery(galleryData) {
       try {
         const formData = new FormData();
-        formData.append("image", this.file);
+        formData.append("galleryName", this.galleryName);
+        formData.append("galleryDescription", this.galleryDescription);
 
-        const res = await this.$axios.put("/upload/drive", formData, {
+        const res = await this.$axios.put("drf/galleries/", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
