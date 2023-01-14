@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <nuxt-link to="/add-gallery">Add new gallery</nuxt-link>
     <div v-if="!loading && gallery" class="w-12/12 mx-auto px-8 mt-16">
       <div class="flex items-center justify-end">
         <div v-if="gallery.published_at">
@@ -89,17 +90,28 @@ export default {
       this.loading = false;
     },
     async togglePublication() {
-      this.updating = true;
-      try {
-        const res = await this.$axios.patch(
-          `galleries/${this.gallery.id}/toggle-publication`
-        );
-        this.gallery = res.data;
-      } catch (error) {
-        console.error(error);
+      this.updating = true
+      if (!!this.gallery.published_at) {
+        try {
+          const res = await this.$axios.patch(
+            `drf/galleries/${this.gallery.slug}/unpublish/`
+          );
+          this.gallery = res.data;
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        try {
+          const res = await this.$axios.patch(
+            `drf/galleries/${this.gallery.slug}/publish/`
+          );
+          this.gallery = res.data;
+        } catch (error) {
+          console.error(error);
+        }
       }
-      this.updating = false;
-    }
+      this.updating = false
+    },
   },
   mounted() {
     this.getDefaultUserGallery();
