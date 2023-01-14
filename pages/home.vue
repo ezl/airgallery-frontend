@@ -19,6 +19,9 @@
           <span v-else>Unpublish</span>
         </button>
       </div>
+      <div>
+        <dropzone id="dropzone" ref="dropzone" :options="options" :destroyDropzone="true"></dropzone>
+      </div>
       <div class="mt-8">
         <Gallery
           ref="gallery"
@@ -35,14 +38,20 @@
 </template>
 
 <script>
+import Dropzone from 'nuxt-dropzone'
+import 'nuxt-dropzone/dropzone.css'
 import Gallery from "@/components/Gallery";
 export default {
   components: {
+    Dropzone,
     Gallery
   },
   middleware: "auth",
   data() {
     return {
+      options: {
+        url: "http://httpbin.org/anything"
+      },
       file: null,
       gallery: null,
       uploading: false,
@@ -115,6 +124,7 @@ export default {
   },
   mounted() {
     this.getDefaultUserGallery();
+    const instance = this.$refs.dropzone
   }
 };
 </script>
