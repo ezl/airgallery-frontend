@@ -20,7 +20,14 @@
         </button>
       </div>
       <div>
-        <dropzone id="dropzone" ref="dropzone" :options="options" :destroyDropzone="true"></dropzone>
+        <dropzone
+          id="dropzone"
+          ref="dropzone"
+          :options="options"
+          @vdropzone-file-added="uploadFile"
+          @vdropzone-complete="afterComplete"
+          @vdropzone-error="uploadError"
+          :destroyDropzone="true"></dropzone>
       </div>
       <div class="mt-8">
         <Gallery
@@ -50,7 +57,9 @@ export default {
   data() {
     return {
       options: {
-        url: "http://httpbin.org/anything"
+        url: "http://localhost:8000/api/upload/drive/",
+        acceptedFiles: 'image/*',
+        method: 'post',
       },
       file: null,
       gallery: null,
@@ -70,13 +79,33 @@ export default {
       e.target.value = "";
       this.upload();
     },
+    afterComplete(file) {
+      console.log("AFTER COMPLETE")
+      console.log(file);
+    },
     async upload() {
-      this.uploading = true;
+      this.uploading = true
+      await this.uploadFile(this.file)
+      this.uploading = false
+    },
+    uploadError(file, response) {
+      console.log('ERROR')
+      console.log('ERROR')
+      console.log('ERROR')
+      console.log('ERROR')
+      console.log(file)
+      console.log(response)
+      console.log('ERROR')
+      console.log('ERROR')
+      console.log('ERROR')
+
+    },
+    async uploadFile(file) {
       try {
         const formData = new FormData();
-        formData.append("image", this.file);
+        formData.append("image", file);
 
-        const res = await this.$axios.put("/upload/drive", formData, {
+        const res = await this.$axios.post("/upload/drive/", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
@@ -86,7 +115,6 @@ export default {
       } catch (error) {
         console.error(error);
       }
-      this.uploading = false;
     },
     async getDefaultUserGallery() {
       this.loading = true;
