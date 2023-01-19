@@ -16,9 +16,6 @@
           id="dropzone"
           ref="dropzone"
           :options="options"
-          @vdropzone-file-added="uploadFile"
-          @vdropzone-complete="afterComplete"
-          @vdropzone-error="uploadError"
           :destroyDropzone="true"></dropzone>
       </div>
       <div class="mt-8">
