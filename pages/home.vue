@@ -68,6 +68,7 @@ export default {
       this.uploading = true;
       files.forEach(async file => {
         const formData = new FormData();
+        formData.append("gallery_slug", this.gallery.slug)
         formData.append("image", file);
         try {
           const res = await this.$axios.post("/upload/drive", formData, {
