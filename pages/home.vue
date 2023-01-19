@@ -12,7 +12,14 @@
         </button>
       </div>
       <div>
-        <dropzone id="dropzone" ref="dropzone" :options="options" :destroyDropzone="true"></dropzone>
+        <dropzone
+          id="dropzone"
+          ref="dropzone"
+          :options="options"
+          @vdropzone-file-added="uploadFile"
+          @vdropzone-complete="afterComplete"
+          @vdropzone-error="uploadError"
+          :destroyDropzone="true"></dropzone>
       </div>
       <div class="mt-8">
         <Gallery
@@ -45,6 +52,7 @@ export default {
         url: this.uploadFiles,
         autoProcessQueue: true,
         parallelUploads: 1,
+        acceptedFiles: 'image/*',
       },
       file: null,
       gallery: null,
