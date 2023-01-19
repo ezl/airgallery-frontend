@@ -6,14 +6,6 @@
         <div v-if="gallery.published_at">
           <a :href="galleryLink" target="_blank" class="text-blue-500 underline">{{galleryLink}}</a>
         </div>
-        <label
-          :class="{ loading: uploading }"
-          :disabled="uploading"
-          class="btn btn-primary btn-outline ml-3"
-        >
-          <input type="file" @change="onChange" class="hidden" />
-          Upload
-        </label>
         <button @click="togglePublication" :class="{ loading: updating }" class="btn btn-primary ml-3">
           <span v-if="!gallery.published_at">Publish</span>
           <span v-else>Unpublish</span>
@@ -50,7 +42,9 @@ export default {
   data() {
     return {
       options: {
-        url: "http://httpbin.org/anything"
+        url: this.uploadFiles,
+        autoProcessQueue: true,
+        parallelUploads: 1,
       },
       file: null,
       gallery: null,
@@ -65,27 +59,23 @@ export default {
     }
   },
   methods: {
-    onChange(e) {
-      this.file = e.target.files[0];
-      e.target.value = "";
-      this.upload();
-    },
-    async upload() {
+    uploadFiles(files) {
       this.uploading = true;
-      try {
+      files.forEach(async file => {
         const formData = new FormData();
-        formData.append("image", this.file);
+        formData.append("image", file);
+        try {
+          const res = await this.$axios.post("/upload/drive", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          });
 
-        const res = await this.$axios.put("/upload/drive", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        });
-
-        this.$refs.gallery.add(res.data);
-      } catch (error) {
-        console.error(error);
-      }
+          // this.$refs.gallery.add(res.data);
+        } catch (error) {
+          console.error(error);
+        }
+      })
       this.uploading = false;
     },
     async getDefaultUserGallery() {
