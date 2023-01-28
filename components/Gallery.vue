@@ -8,12 +8,10 @@
         <span v-if="!gallery.published_at">Publish</span>
         <span v-else>Unpublish</span>
       </button>
+      <Uploader @fileAddSuccess='this.add' />
     </div>
 
-    <Uploader @fileAddSuccess='this.add' />
-
-    <div class="mt-8">
-    <h2>new masonry gallery - why is this so slow to render?</h2>
+    <section class="mt-8">
       <vue-masonry-wall :items="images" :options="masonryOptions" @append="append">
         <template v-slot:default="{item}" class="masonry">
           <div class="item">
@@ -27,22 +25,24 @@
           </div>
         </template>
       </vue-masonry-wall>
-    </div>
-    <hr>
-    <h2>old tile gallery</h2>
-    <div v-if="images.length" class="gallery">
-      <div v-for="img in images" :key="img.id">
-        <img :src="img.thumbnailLink" referrerPolicy="no-referrer" />
+    </section>
+
+    <section class="mt-8" v-if="false">
+      <div v-if="images.length" class="gallery">
+        <div v-for="img in images" :key="img.id">
+          <img :src="img.thumbnailLink" referrerPolicy="no-referrer" />
+        </div>
       </div>
-    </div>
-    <div v-else class="text-center mt-20">
-      <span
-        v-if="loading"
-        class="loading btn bg-transparent text-black border-none"
-        >Loading...</span
-      >
-      <span v-else>No images</span>
-    </div>
+      <div v-else class="text-center mt-20">
+        <span
+          v-if="loading"
+          class="loading btn bg-transparent text-black border-none"
+          >Loading...</span
+        >
+        <span v-else>No images</span>
+      </div>
+    </section>
+
   </div>
 </template>
 

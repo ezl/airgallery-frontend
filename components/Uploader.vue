@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <span>
     <!-- The button to open modal -->
-    <label for="dropzone-modal" class="btn btn-primary ml-3">open modal</label>
+    <label for="dropzone-modal" class="btn btn-primary ml-3">&plus;&nbsp;&nbsp;Add Images</label>
 
     <!-- Put this part before </body> tag -->
     <input type="checkbox" id="dropzone-modal" class="modal-toggle" />
@@ -18,7 +18,7 @@
         </dropzone>
       </div>
     </div>
-  </div>
+  </span>
 </template>
 <script>
 import 'nuxt-dropzone/dropzone.css'
@@ -52,11 +52,17 @@ export default {
 </script>
 
 <style>
+.modal {
+}
 .modal-box {
+  height: calc(100vh - 6em);
+  max-width: calc(100vw - 6em);
+  width: calc(100vw - 6em);
 }
 
 .vue-dropzone {
   @apply bg-slate-700 border-slate-400 border-dashed;
+  height: 90%;
 }
 .vue-dropzone:hover {
   @apply bg-slate-500 border-slate-200
