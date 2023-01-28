@@ -9,7 +9,8 @@ export default {
   head: {
     title: "universal-photo-gallery-frontend",
     htmlAttrs: {
-      lang: "en"
+      lang: "en",
+      'data-theme': "forest"
     },
     meta: [
       { charset: "utf-8" },
