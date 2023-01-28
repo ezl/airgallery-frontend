@@ -1,23 +1,19 @@
 <template>
   <div>
-      <div class="flex items-center justify-end">
-        <div v-if="gallery.published_at">
-          <a :href="galleryLink" target="_blank" class="text-blue-500 underline">{{galleryLink}}</a>
-        </div>
-        <button @click="togglePublication" :class="{ loading: updating }" class="btn btn-primary ml-3">
-          <span v-if="!gallery.published_at">Publish</span>
-          <span v-else>Unpublish</span>
-        </button>
+    <div class="flex items-center justify-end">
+      <div v-if="gallery.published_at">
+        <a :href="galleryLink" target="_blank" class="text-blue-500 underline">{{galleryLink}}</a>
       </div>
-      <div>
-        <dropzone
-          id="dropzone"
-          ref="dropzone"
-          @vdropzone-success="addToGallery"
-          :options="dropzoneOptions"
-          :destroyDropzone="true"></dropzone>
-      </div>
+      <button @click="togglePublication" :class="{ loading: updating }" class="btn btn-primary ml-3">
+        <span v-if="!gallery.published_at">Publish</span>
+        <span v-else>Unpublish</span>
+      </button>
+    </div>
+
+    <Uploader @fileAddSuccess='this.add' />
+
     <div class="mt-8">
+    <h2>new masonry gallery - why is this so slow to render?</h2>
       <vue-masonry-wall :items="images" :options="masonryOptions" @append="append">
         <template v-slot:default="{item}" class="masonry">
           <div class="item">
@@ -33,6 +29,7 @@
       </vue-masonry-wall>
     </div>
     <hr>
+    <h2>old tile gallery</h2>
     <div v-if="images.length" class="gallery">
       <div v-for="img in images" :key="img.id">
         <img :src="img.thumbnailLink" referrerPolicy="no-referrer" />
@@ -51,13 +48,12 @@
 
 <script>
 import VueMasonryWall from "vue-masonry-wall"
-import 'nuxt-dropzone/dropzone.css'
-import Dropzone from 'nuxt-dropzone'
+import Uploader from "@/components/Uploader";
 
 export default {
   components: {
     VueMasonryWall,
-    Dropzone,
+    Uploader,
   },
   props: {
     gallery: {
@@ -71,17 +67,10 @@ export default {
   },
   data() {
     return {
-
-      // dropzone stuff
-      dropzoneOptions: {
-        url: 'http://localhost:8000/api/upload/drive',
-        autoProcessQueue: true,
-        parallelUploads: 1,
-        acceptedFiles: 'image/*',
-      },
-
       // our ui stuff
       updating: false,
+      images: [],
+      loading: true,
 
       // masonry stuff
       items: [],
@@ -93,9 +82,6 @@ export default {
           2: 8
         }
       },
-
-      images: [],
-      loading: true
     };
   },
   computed:{
@@ -108,11 +94,6 @@ export default {
       // API call and add items for masonry
       this.items.push(...[])
     },
-    addToGallery(file, response) {
-      // takes the success response and adds the file (from the server, not local - unnecessary bandwidth?)
-      // to the gallery in the DOM
-      this.add(response)
-     },
     async togglePublication() {
       this.updating = true
       if (!!this.gallery.published_at) {
@@ -154,7 +135,6 @@ export default {
   },
   mounted() {
     this.getImages();
-    const instance = this.$refs.dropzone
   }
 };
 </script>
