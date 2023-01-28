@@ -8,7 +8,7 @@
     <div class="modal">
       <div class="modal-box relative">
         <label for="dropzone-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-        <h3 class="text-lg font-bold">Upload Images</h3>
+        <h3 class="text-lg font-bold mb-4">Upload Images</h3>
         <dropzone
           id="dropzone"
           ref="dropzone"
@@ -53,9 +53,13 @@ export default {
 
 <style>
 .modal-box {
-  max-width: 90%;
-  height: 90%;
+}
 
+.vue-dropzone {
+  @apply bg-slate-700 border-slate-400 border-dashed;
+}
+.vue-dropzone:hover {
+  @apply bg-slate-500 border-slate-200
 }
 
 </style>
