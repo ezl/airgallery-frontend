@@ -15,6 +15,7 @@
         <dropzone
           id="dropzone"
           ref="dropzone"
+          @vdropzone-success="addToGallery"
           :options="options"
           :destroyDropzone="true"></dropzone>
       </div>
@@ -46,7 +47,7 @@ export default {
   data() {
     return {
       options: {
-        url: this.uploadFiles,
+        url: 'http://localhost:8000/api/upload/drive',
         autoProcessQueue: true,
         parallelUploads: 1,
         acceptedFiles: 'image/*',
@@ -64,26 +65,6 @@ export default {
     }
   },
   methods: {
-    uploadFiles(files) {
-      this.uploading = true;
-      files.forEach(async file => {
-        const formData = new FormData();
-        formData.append("gallery_slug", this.gallery.slug)
-        formData.append("image", file);
-        try {
-          const res = await this.$axios.post("/upload/drive", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          });
-
-          // this.$refs.gallery.add(res.data);
-        } catch (error) {
-          console.error(error);
-        }
-      })
-      this.uploading = false;
-    },
     async getDefaultUserGallery() {
       this.loading = true;
       try {
@@ -94,6 +75,11 @@ export default {
       }
       this.loading = false;
     },
+    addToGallery(file, response) {
+      // takes the success response and adds the file (from the server, not local - unnecessary bandwidth?)
+      // to the gallery in the DOM
+      this.$refs.gallery.add(response)
+     },
     async togglePublication() {
       this.updating = true
       if (!!this.gallery.published_at) {
