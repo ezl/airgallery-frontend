@@ -16,10 +16,6 @@
       </vue-masonry-wall>
     </div>
     <hr>
-    Sample item
-    {{images[0]}}
-
-    <hr>
     <div v-if="images.length" class="gallery">
       <div v-for="img in images" :key="img.id">
         <img :src="img.thumbnailLink" referrerPolicy="no-referrer" />
