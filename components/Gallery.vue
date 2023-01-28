@@ -6,7 +6,7 @@
           <div class="item">
             <img :src="item.thumbnailLink" referrerPolicy="no-referrer" />
             <div class='itemDescription'>
-              <h5>👁 {{item.name}}</h5>
+              <h5 class='itemTitle'>{{item.name}}</h5>
               <p v-if="item.content"> {{item.content}}</p>
               <p v-if="item.imageMediaMetadata.cameraModel">📸 {{item.imageMediaMetadata.cameraModel}}</p>
               <p v-if="item.imageMediaMetadata.time">🗓 {{item.imageMediaMetadata.time}}</p>
@@ -114,7 +114,10 @@ export default {
   width: 100%;
   object-fit: cover;
 }
+.itemTitle {
+  @apply text-base text-white mb-1;
+ }
 .itemDescription {
-  @apply text-sm text-slate-300 mt-2;
+  @apply text-sm text-slate-300 mt-2 font-light;
 }
 </style>
