@@ -1,23 +1,6 @@
 <template>
   <div class="">
     <div v-if="!loading && gallery" class="w-12/12 mx-auto px-8 mt-16">
-      <div class="flex items-center justify-end">
-        <div v-if="gallery.published_at">
-          <a :href="galleryLink" target="_blank" class="text-blue-500 underline">{{galleryLink}}</a>
-        </div>
-        <button @click="togglePublication" :class="{ loading: updating }" class="btn btn-primary ml-3">
-          <span v-if="!gallery.published_at">Publish</span>
-          <span v-else>Unpublish</span>
-        </button>
-      </div>
-      <div>
-        <dropzone
-          id="dropzone"
-          ref="dropzone"
-          @vdropzone-success="addToGallery"
-          :options="options"
-          :destroyDropzone="true"></dropzone>
-      </div>
       <div class="mt-8">
         <Gallery
           ref="gallery"
@@ -34,34 +17,17 @@
 </template>
 
 <script>
-import Dropzone from 'nuxt-dropzone'
-import 'nuxt-dropzone/dropzone.css'
 import Gallery from "@/components/Gallery";
 export default {
   components: {
-    Dropzone,
     Gallery
   },
   middleware: "auth",
   data() {
     return {
-      options: {
-        url: 'http://localhost:8000/api/upload/drive',
-        autoProcessQueue: true,
-        parallelUploads: 1,
-        acceptedFiles: 'image/*',
-      },
-      file: null,
       gallery: null,
-      uploading: false,
-      loading: false,
-      updating: false
+      loading: true,
     };
-  },
-  computed:{
-    galleryLink(){
-      return window.location.origin + '/gallery/' + this.gallery.slug
-    }
   },
   methods: {
     async getDefaultUserGallery() {
@@ -74,38 +40,9 @@ export default {
       }
       this.loading = false;
     },
-    addToGallery(file, response) {
-      // takes the success response and adds the file (from the server, not local - unnecessary bandwidth?)
-      // to the gallery in the DOM
-      this.$refs.gallery.add(response)
-     },
-    async togglePublication() {
-      this.updating = true
-      if (!!this.gallery.published_at) {
-        try {
-          const res = await this.$axios.patch(
-            `drf/galleries/${this.gallery.slug}/unpublish/`
-          );
-          this.gallery = res.data;
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        try {
-          const res = await this.$axios.patch(
-            `drf/galleries/${this.gallery.slug}/publish/`
-          );
-          this.gallery = res.data;
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      this.updating = false
-    },
   },
   mounted() {
     this.getDefaultUserGallery();
-    const instance = this.$refs.dropzone
   }
 };
 </script>

@@ -1,5 +1,22 @@
 <template>
   <div>
+      <div class="flex items-center justify-end">
+        <div v-if="gallery.published_at">
+          <a :href="galleryLink" target="_blank" class="text-blue-500 underline">{{galleryLink}}</a>
+        </div>
+        <button @click="togglePublication" :class="{ loading: updating }" class="btn btn-primary ml-3">
+          <span v-if="!gallery.published_at">Publish</span>
+          <span v-else>Unpublish</span>
+        </button>
+      </div>
+      <div>
+        <dropzone
+          id="dropzone"
+          ref="dropzone"
+          @vdropzone-success="addToGallery"
+          :options="dropzoneOptions"
+          :destroyDropzone="true"></dropzone>
+      </div>
     <div class="mt-8">
       <vue-masonry-wall :items="images" :options="masonryOptions" @append="append">
         <template v-slot:default="{item}" class="masonry">
@@ -34,9 +51,14 @@
 
 <script>
 import VueMasonryWall from "vue-masonry-wall"
+import 'nuxt-dropzone/dropzone.css'
+import Dropzone from 'nuxt-dropzone'
 
 export default {
-  components: { VueMasonryWall },
+  components: {
+    VueMasonryWall,
+    Dropzone,
+  },
   props: {
     gallery: {
         type: Object,
@@ -49,8 +71,19 @@ export default {
   },
   data() {
     return {
-      // masonry stuff
 
+      // dropzone stuff
+      dropzoneOptions: {
+        url: 'http://localhost:8000/api/upload/drive',
+        autoProcessQueue: true,
+        parallelUploads: 1,
+        acceptedFiles: 'image/*',
+      },
+
+      // our ui stuff
+      updating: false,
+
+      // masonry stuff
       items: [],
       masonryOptions: {
         width: 300,
@@ -65,10 +98,43 @@ export default {
       loading: true
     };
   },
+  computed:{
+    galleryLink(){
+      return window.location.origin + '/gallery/' + this.gallery.slug
+    }
+  },
   methods: {
     append() {
       // API call and add items for masonry
       this.items.push(...[])
+    },
+    addToGallery(file, response) {
+      // takes the success response and adds the file (from the server, not local - unnecessary bandwidth?)
+      // to the gallery in the DOM
+      this.add(response)
+     },
+    async togglePublication() {
+      this.updating = true
+      if (!!this.gallery.published_at) {
+        try {
+          const res = await this.$axios.patch(
+            `drf/galleries/${this.gallery.slug}/unpublish/`
+          );
+          this.gallery = res.data;
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        try {
+          const res = await this.$axios.patch(
+            `drf/galleries/${this.gallery.slug}/publish/`
+          );
+          this.gallery = res.data;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      this.updating = false
     },
     async getImages() {
       this.loading = true;
@@ -88,6 +154,7 @@ export default {
   },
   mounted() {
     this.getImages();
+    const instance = this.$refs.dropzone
   }
 };
 </script>
