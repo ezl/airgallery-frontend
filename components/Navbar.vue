@@ -3,7 +3,7 @@
     <div class="flex-1">
       <nuxt-link to="/" class="logo">kettlestitch</nuxt-link>
     </div>
-    <div class="flex-none">
+    <div class="flex-none" v-if="showAuthenticationPanel()">
       <div v-if="$auth.loggedIn" class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
@@ -36,6 +36,17 @@ import { getGoogleOAuthUrl } from "@/helpers";
 export default {
   auth: "guest",
   methods: {
+    showAuthenticationPanel() {
+      // do we want to show the login button on this page?
+      const currentPath = this.$nuxt.$route.path
+      const excludePaths = [
+        '/',
+      ]
+      if (excludePaths.indexOf(currentPath) == -1) {
+        return true
+      }
+      return false
+    },
     logout() {
       this.$auth.logout();
     },
