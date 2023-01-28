@@ -1,12 +1,13 @@
 <template>
-  <div class="hero min-h-screen bg-base-200">
+  <div class="hero">
     <div class="hero-content text-center">
-      <div class="max-w-md">
-        <h1 class="text-5xl font-bold">Universal Photo Gallery</h1>
-        <p class="py-6">
-          Host your photo gallery on google drive
+      <div class="max-w-lg">
+        <h1 class="text-5xl text-white">Beautiful Galleries For Groups Or Events</h1>
+        <p class="mt-6">
+          The easiest way to create a gallery that your friends or event attendees can also add to.
         </p>
-        <button @click="redirect" class="btn btn-primary">Get Started</button>
+        <button @click="redirect" class="my-14 btn btn-primary">Get Started</button>
+        <img src='@/static/hero.png' class='mx-auto' />
       </div>
     </div>
   </div>
@@ -28,3 +29,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+div.hero {
+  /* Subtract header height */
+  height: calc(100vh - 80px);
+}
+.hero img {
+}
+</style>

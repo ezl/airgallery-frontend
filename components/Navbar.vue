@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center py-4 px-8">
     <div class="flex-1">
-      <nuxt-link to="/" class="font-bold text-xl">Universal Photo Gallery</nuxt-link>
+      <nuxt-link to="/" class="logo">kettlestitch</nuxt-link>
     </div>
     <div class="flex-none">
       <div v-if="$auth.loggedIn" class="dropdown dropdown-end">
@@ -49,3 +49,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.logo {
+  @apply text-xl tracking-widest;
+  font-family: 'Lora', serif;
+}
+</style>
