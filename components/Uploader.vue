@@ -1,12 +1,23 @@
 <template>
   <div>
-    <dropzone
-      id="dropzone"
-      ref="dropzone"
-      :options="dropzoneOptions"
-      @vdropzone-success="fileAddSuccess"
-      :destroyDropzone="true">
-    </dropzone>
+    <!-- The button to open modal -->
+    <label for="dropzone-modal" class="btn btn-primary ml-3">open modal</label>
+
+    <!-- Put this part before </body> tag -->
+    <input type="checkbox" id="dropzone-modal" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative">
+        <label for="dropzone-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <h3 class="text-lg font-bold">Upload Images</h3>
+        <dropzone
+          id="dropzone"
+          ref="dropzone"
+          :options="dropzoneOptions"
+          @vdropzone-success="fileAddSuccess"
+          :destroyDropzone="true">
+        </dropzone>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -39,3 +50,12 @@ export default {
   }
 };
 </script>
+
+<style>
+.modal-box {
+  max-width: 90%;
+  height: 90%;
+
+}
+
+</style>
