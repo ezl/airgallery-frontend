@@ -14,15 +14,7 @@
     <section class="mt-8">
       <vue-masonry-wall :items="images" :options="masonryOptions" @append="append">
         <template v-slot:default="{item}" class="masonry">
-          <div class="item">
-            <img :src="item.thumbnailLink" referrerPolicy="no-referrer" />
-            <div class='itemDescription'>
-              <h5 class='itemTitle'>{{item.name}}</h5>
-              <p v-if="item.content"> {{item.content}}</p>
-              <p v-if="item.imageMediaMetadata.cameraModel">📸 {{item.imageMediaMetadata.cameraModel}}</p>
-              <p v-if="item.imageMediaMetadata.time">🗓 {{item.imageMediaMetadata.time}}</p>
-            </div>
-          </div>
+          <gallery-item :item="item" />
         </template>
       </vue-masonry-wall>
     </section>
@@ -140,6 +132,7 @@ export default {
 </script>
 
 <style scoped>
+/* old gallery - just keeping this here until i figure out the rendering speed issue */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -151,16 +144,5 @@ export default {
   height: 100%;
   object-fit: cover;
 }
-
-.masonry-item > .item > img {
-  @apply rounded-2xl;
-  width: 100%;
-  object-fit: cover;
-}
-.itemTitle {
-  @apply text-base text-white mb-1;
- }
-.itemDescription {
-  @apply text-sm text-slate-300 mt-2 font-light;
-}
+/* end old gallery */
 </style>
