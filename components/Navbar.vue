@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center py-4 px-8">
     <div class="flex-1">
-      <nuxt-link to="/" class="logo">kettlestitch</nuxt-link>
+      <img id='navIcon' src='@/static/icon.png' /> <nuxt-link to="/" class="logo">kettlestitch</nuxt-link>
     </div>
     <div class="flex-none" v-if="showAuthenticationPanel()">
       <div v-if="$auth.loggedIn" class="dropdown dropdown-end">
@@ -61,9 +61,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .logo {
   @apply text-xl tracking-widest;
   font-family: 'Lora', serif;
+}
+
+#navIcon {
+  display: inline-block;
+  height: 22px;
+  margin-right: 0.5em;
+  vertical-align: sub;
 }
 </style>
