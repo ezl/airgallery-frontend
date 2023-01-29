@@ -13,7 +13,10 @@
       <h2 class="mt-4 text-xl">{{ gallery.user.first_name }}</h2>
     </div>
     <div class="mt-8">
-      <Gallery :gallery="gallery" :image-fetch-endpoint="`/galleries/${this.gallery.id}/images`"/>
+      <Gallery
+        :gallery="gallery" 
+        :image-fetch-endpoint="`/galleries/${this.gallery.id}/images`"
+      />
     </div>
   </div>
   <div v-else class="h-screen flex justify-center items-center"> 
