@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "universal-photo-gallery-frontend",
+    title: "Kettle Stitch: Galleries w/ Friends",
     htmlAttrs: {
       lang: "en",
       'data-theme': "forest"
