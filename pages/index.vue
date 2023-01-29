@@ -2,8 +2,8 @@
   <div class="hero">
     <div class="hero-content text-center">
       <div class="max-w-lg">
-        <h1 class="text-5xl text-white">Beautiful Galleries For Groups Or Events</h1>
-        <p class="mt-6">
+        <h1>Beautiful Galleries For Groups Or Events</h1>
+        <p class="subtext">
           The easiest way to create a gallery that your friends or event attendees can also add to.
         </p>
         <button @click="redirect" class="my-14 btn btn-primary">Get Started</button>
@@ -34,6 +34,17 @@ export default {
 div.hero {
   /* Subtract header height */
   height: calc(100vh - 80px);
+}
+.hero h1 {
+  @apply text-white;
+  font-size: 2.25rem;
+  line-height: 3.4rem;
+}
+.hero p.subtext {
+  @apply mt-6 text-slate-300;
+  font-weight: lighter;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
 }
 .hero img {
 }
