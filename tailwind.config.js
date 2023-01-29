@@ -11,6 +11,7 @@ module.exports = {
     require('@tailwindcss/forms', {
       strategy: 'base'
     }),
+    require("@tailwindcss/typography"),
     require("daisyui")
     ],
   daisyui: {
