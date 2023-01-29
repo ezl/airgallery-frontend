@@ -78,7 +78,7 @@ export default {
   },
   computed:{
     galleryLink(){
-      return window.location.origin + '/gallery/' + this.gallery.slug
+      return '/gallery/' + this.gallery.slug
     }
   },
   methods: {
