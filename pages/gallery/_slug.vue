@@ -15,7 +15,7 @@
     <div class="mt-8">
       <Gallery
         :gallery="gallery" 
-        :image-fetch-endpoint="`/galleries/${this.gallery.id}/images`"
+        :image-fetch-endpoint="`/drf/images/?gallery=${this.gallery.id}`"
       />
     </div>
   </div>
