@@ -37,7 +37,7 @@ export default {
   },
   async asyncData({ params, $axios }) {
     try {
-      const res = await $axios.get(`/galleries/by-slug/${params.slug}`);
+      const res = await $axios.get(`/drf/galleries/${params.slug}`);
       return {
         gallery: res.data
       };
