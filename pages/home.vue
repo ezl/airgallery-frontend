@@ -33,7 +33,7 @@ export default {
     async getDefaultUserGallery() {
       this.loading = true;
       try {
-        const res = await this.$axios.get(`/auth/user/gallery`);
+        const res = await this.$axios.get(`/drf/galleries/?user=request.user`);
         this.gallery = res.data;
       } catch (error) {
         console.error(error);
