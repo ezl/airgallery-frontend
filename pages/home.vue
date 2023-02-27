@@ -1,15 +1,16 @@
 <template>
   <div class="">
-    <div v-if="!loading && gallery" class="w-12/12 mx-auto px-8 mt-16">
-      <div class="mt-8">
+    <div v-if="!loading && galleries" class="w-12/12 mx-auto px-8 mt-16">
+      <div class="mt-8" v-for="gallery in galleries">
         <Gallery
           ref="gallery"
           v-if="gallery"
           :gallery="gallery"
-          :image-fetch-endpoint="`/drf/images/?gallery=${this.gallery[0].id}`"
+          :image-fetch-endpoint="`/drf/images/?gallery=${gallery.id}`"
         />
       </div>
     </div>
+
     <div v-else class="h-screen flex justify-center items-center">
       <h5 class="text-lg">Loading...</h5>
     </div>
@@ -25,16 +26,16 @@ export default {
   middleware: "auth",
   data() {
     return {
-      gallery: null,
+      galleries: [],
       loading: true,
     };
   },
   methods: {
-    async getDefaultUserGallery() {
+    async getUserGalleries() {
       this.loading = true;
       try {
         const res = await this.$axios.get(`/drf/galleries/?user=request.user`);
-        this.gallery = res.data;
+        this.galleries = res.data;
       } catch (error) {
         console.error(error);
       }
@@ -42,7 +43,7 @@ export default {
     },
   },
   mounted() {
-    this.getDefaultUserGallery();
+    this.getUserGalleries();
   }
 };
 </script>
