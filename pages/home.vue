@@ -6,7 +6,7 @@
           ref="gallery"
           v-if="gallery"
           :gallery="gallery"
-          image-fetch-endpoint="auth/user/gallery/images"
+          :image-fetch-endpoint="`/drf/images/?gallery=${this.gallery[0].id}`"
         />
       </div>
     </div>
